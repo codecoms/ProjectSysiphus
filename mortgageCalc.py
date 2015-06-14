@@ -4,12 +4,13 @@ __author__ = 'Federico'
 
 # give total loan
 property_value = 200000
-percent_down = 4.0
+pmi_breakeven = property_value * 0.2
+percent_down = 3.0
 money_down = property_value * (percent_down/100.0)
 principal = property_value - money_down
 loan_to_value = principal/property_value
 percent_annual_interest = 6.5
-mortgage_years = 15
+mortgage_years = 30
 payment_number = mortgage_years * 12
 
 if percent_down < 20.0:
@@ -70,6 +71,7 @@ mortgage_months = mortgage_years * 12
 
 print '====== Mortgage Schedule ======'
 starting_balance = principal
+total_pmi_paid = 0
 
 print '#  |', '  Start Bal.  |', '   Payment   |', 'Pmt with PMI |' , ' Principal   |', '   Interest |', '   End Bal |', "\n"
 
@@ -78,15 +80,23 @@ for n in range( 1, mortgage_months +1):
 	intr_applied = pmt - intr
 	end_balance = starting_balance - intr_applied
 
+	while end_balance >= (property_value - pmi_breakeven):
+		total_pmi_paid += montly_pmi_pmt
+		pmi_stop = n+1
+		break
+
 	print n,' | ',  format_currency(starting_balance), ' | ', format_currency(pmt), ' | ', format_currency(montly_pmi_pmt + pmt), ' | ', format_currency(intr_applied), ' | ', format_currency(intr), ' | ', format_currency(end_balance), "  | \n"
-	
+
 	starting_balance = end_balance
+
 
 
 print "\n"
 print ' -------------- Vars -----------------'
+print 'Money_down: ', format_currency(money_down)
+print 'PMI breakeven 20%: ', format_currency(pmi_breakeven - money_down)
+print 'PMI Stop Payment at year: ', round(pmi_stop / 12)
 print 'loan to value: ', loan_to_value
-print 'money_down: ', format_currency(money_down)
 print 'principal', format_currency(principal)
 print 'PMI Required: ', pmi_required
 print 'pmi_rate: ', pmi_rate
@@ -96,6 +106,9 @@ print 'Annual PMI: ', format_currency(principal * pmi_rate)
 print 'Montly PMI Payment: ', format_currency(montly_pmi_pmt)
 print 'Monltly total payment', format_currency(montly_pmi_pmt + pmt)
 print "------------------------------- \n"
+print pmi_stop
+print format_currency(total_pmi_paid)
+print (property_value - pmi_breakeven)
 
 
 #total_cost = payment_number * monthly_payment
