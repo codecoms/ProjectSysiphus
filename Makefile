@@ -1,2 +1,4 @@
-all:
+all: test
+
+test:
 	nosetests -v
