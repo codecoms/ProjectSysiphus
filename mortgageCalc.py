@@ -3,10 +3,10 @@
 __author__ = 'Federico'
 
 # Must have data
-property_value = 200000
-percent_annual_interest = 6.0
+property_value = 270000
+percent_annual_interest = 4.9
 mortgage_years = 30
-percent_down = 20
+percent_down = 20.0
 
 #Derived data
 pmi_breakeven = property_value * 0.2
@@ -73,8 +73,14 @@ print '====== Mortgage Schedule ======'
 starting_balance = principal
 total_pmi_paid = 0
 total_cost = 0
+starting_balance_array = []
+pmt_array = []
+montly_pmi_pmt_array = []
+intr_applied_array = []
+intr_array = []
+end_balance_array = []
 
-print '#  |', '  Start Bal.  |', '   Payment   |', 'Pmt with PMI |' , ' Principal   |', '   Interest |', '   End Bal |', "\n"
+print '#  |', '  Start Bal.  |', '  Payment  |', 'Pmt with PMI |' , ' Principal  |', 'Interest |', ' End Bal |', "\n"
 
 for n in range( 1, mortgage_months +1):
 	intr = starting_balance * (percent_annual_interest / (12 * 100.0) )
@@ -85,12 +91,20 @@ for n in range( 1, mortgage_months +1):
 		total_pmi_paid += montly_pmi_pmt
 		pmi_stop = n+1
 		break
-
 	print n,' | ',  format_currency(starting_balance), ' | ', format_currency(pmt), ' | ', format_currency(montly_pmi_pmt + pmt), ' | ', format_currency(intr_applied), ' | ', format_currency(intr), ' | ', format_currency(end_balance), "  | \n"
+
+	#create arrays for Table payment
+	starting_balance_array.append(starting_balance)
+	pmt_array.append(pmt)
+	montly_pmi_pmt_array.append(montly_pmi_pmt + pmt)
+	intr_applied_array.append(intr_applied)
+	intr_array.append(intr)
+	end_balance_array.append(end_balance)
 
 	starting_balance = end_balance
 	total_cost += pmt
 
+mortgage_payment_table = [starting_balance_array, pmt_array, montly_pmi_pmt_array, intr_applied_array, intr_array, end_balance_array] #mortgage schedule table
 
 #Variables Printouts
 
@@ -114,4 +128,3 @@ print 'Montly PMI Payment: ', format_currency(montly_pmi_pmt)
 print 'Monltly payment', format_currency(montly_pmi_pmt + pmt)
 print 'PMI Stop Payment at year: ', round(pmi_stop / 12)
 print "----------------------------------------------\n"
-
