@@ -2,21 +2,24 @@
 
 __author__ = 'Federico'
 
-# give total loan
+# Must have data
 property_value = 200000
+percent_annual_interest = 6.0
+mortgage_years = 30
+percent_down = 20
+
+#Derived data
 pmi_breakeven = property_value * 0.2
-percent_down = 3.0
 money_down = property_value * (percent_down/100.0)
 principal = property_value - money_down
 loan_to_value = principal/property_value
-percent_annual_interest = 6.5
-mortgage_years = 30
 payment_number = mortgage_years * 12
 
 if percent_down < 20.0:
 	pmi_required = True
 else:
 	pmi_required = False
+	pmi_stop = 0
 
 
 def format_currency(value):
@@ -60,18 +63,16 @@ def get_pmi_rate(loan_to_value, mortgage_years, pmi_required ):
 
 
 
-
-#test
-
-
 pmi_rate = get_pmi_rate(loan_to_value, mortgage_years, pmi_required)
 pmt = pmt(principal, percent_annual_interest, mortgage_years)
 montly_pmi_pmt = ( principal * pmi_rate )/12
 mortgage_months = mortgage_years * 12
 
+#Mortgage schedule printout 
 print '====== Mortgage Schedule ======'
 starting_balance = principal
 total_pmi_paid = 0
+total_cost = 0
 
 print '#  |', '  Start Bal.  |', '   Payment   |', 'Pmt with PMI |' , ' Principal   |', '   Interest |', '   End Bal |', "\n"
 
@@ -88,31 +89,29 @@ for n in range( 1, mortgage_months +1):
 	print n,' | ',  format_currency(starting_balance), ' | ', format_currency(pmt), ' | ', format_currency(montly_pmi_pmt + pmt), ' | ', format_currency(intr_applied), ' | ', format_currency(intr), ' | ', format_currency(end_balance), "  | \n"
 
 	starting_balance = end_balance
+	total_cost += pmt
 
 
+#Variables Printouts
 
 print "\n"
-print ' -------------- Vars -----------------'
-print 'Money_down: ', format_currency(money_down)
+print ' -------------- Mortgage Info-----------------'
+print 'Principal', format_currency(principal)
+print 'Money down: ', format_currency(money_down)
 print 'PMI breakeven 20%: ', format_currency(pmi_breakeven - money_down)
-print 'PMI Stop Payment at year: ', round(pmi_stop / 12)
-print 'loan to value: ', loan_to_value
-print 'principal', format_currency(principal)
 print 'PMI Required: ', pmi_required
-print 'pmi_rate: ', pmi_rate
-print 'Annual Payment: ', format_currency(pmt * 12) 
-print 'Montly mortgage Payment: ', format_currency (pmt)
+print 'Loan-to-Value ratio: ', loan_to_value
+print 'PMI Rate: ', (pmi_rate * 100),'%'
+print "----------------------------------------------\n"
+
+print '--------------- Payment Info -----------------'
+print 'Total cost of the loan', format_currency(total_cost)
+print 'Total Intrest Paid', format_currency(n * pmt - principal)
+print 'Annual Mortgage Payment: ', format_currency(pmt * 12) 
 print 'Annual PMI: ', format_currency(principal * pmi_rate)
+print 'Montly mortgage Payment: ', format_currency (pmt)
 print 'Montly PMI Payment: ', format_currency(montly_pmi_pmt)
-print 'Monltly total payment', format_currency(montly_pmi_pmt + pmt)
-print "------------------------------- \n"
-print pmi_stop
-print format_currency(total_pmi_paid)
-print (property_value - pmi_breakeven)
+print 'Monltly payment', format_currency(montly_pmi_pmt + pmt)
+print 'PMI Stop Payment at year: ', round(pmi_stop / 12)
+print "----------------------------------------------\n"
 
-
-#total_cost = payment_number * monthly_payment
-#total_interest = payment_number * monthly_payment - principal
-#print ("Total cost: "), format_currency(total_cost)
-#print ("Total Interest: "),  format_currency(total_interest)
-#print ("Monthly Payment: "), format_currency(monthly_payment)
