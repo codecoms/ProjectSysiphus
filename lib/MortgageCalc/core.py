@@ -78,11 +78,4 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
 
         mortgage_payment_table.append(entry)
 
-
-
-    #mortgage_payment_table = [months_array, starting_balance_array, pmt_array, monthly_pmi_pmt_array,
-    #                          intr_applied_array, intr_array, end_balance_array] #mortgage schedule table
-
     return mortgage_payment_table #, pmi_stop, total_cost
-
-
