@@ -23,6 +23,11 @@ class TestMortgageCalc(unittest.TestCase):
     def test_app(self):
         assert_equal(True, True)
 
+    def test_get_pmi_rate(self):
+        expected = 0.003
+        result = core.get_pmi_rate(0.70, 1, True)
+        assert_equal(expected, result)
+
     def test_get_mortgage_schedule(self):
         result = core.get_mortgage_schedule(True, 270000, 4.9, 1, 12, 0.54, 12.0, 1261.01, 21600)
         expected = [{'pmt': 1261.01, 'intr_applied': 290.80999999999983, 'monthly_pmi_pmt': 11953.010000000002, 'month': 1,
@@ -51,4 +56,5 @@ class TestMortgageCalc(unittest.TestCase):
                       'starting_balance': 234334.97228877965, 'intr': 956.8678035125171, 'end_balance': 234030.83009229216}
                     ]
         assert_equal(expected, result)
+
 
