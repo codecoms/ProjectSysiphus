@@ -1,4 +1,4 @@
-#!/user/bin/python
+#!/usr/bin/python
 
 from MortgageCalc import core
 
@@ -45,6 +45,7 @@ class main():
         starting_balance = principal
         total_pmi_paid = 0
         total_cost = 0
+        months_array = []
         starting_balance_array = []
         pmt_array = []
         montly_pmi_pmt_array = []
@@ -77,6 +78,7 @@ class main():
 
             # Create arrays for Table payment
 
+            months_array.append(n)
             starting_balance_array.append(starting_balance)
             pmt_array.append(pmt)
             montly_pmi_pmt_array.append(montly_pmi_pmt + pmt)
@@ -87,7 +89,7 @@ class main():
             starting_balance = end_balance
             total_cost += pmt
 
-        mortgage_payment_table = [starting_balance_array, pmt_array, montly_pmi_pmt_array,
+        mortgage_payment_table = [months_array, starting_balance_array, pmt_array, montly_pmi_pmt_array,
                                   intr_applied_array, intr_array, end_balance_array] #mortgage schedule table
 
         #Variables Printouts
@@ -112,3 +114,5 @@ class main():
         print 'Monltly payment', core.format_currency(montly_pmi_pmt + pmt)
         print 'PMI Stop Payment at year: ', round(pmi_stop / 12)
         print "----------------------------------------------\n"
+
+        print mortgage_payment_table

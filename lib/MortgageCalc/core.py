@@ -38,3 +38,57 @@ def get_pmi_rate(loan_to_value, mortgage_years, pmi_required ):
 
     return pmi_rate
 
+def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest, mortgage_years, payment_number, get_pmi_rate):
+    intr = 0
+    intr_applied = 0
+    money_down = property_value * (percent_down/100.0)
+    starting_balance = property_value - money_down
+    montly_pmi_pmt = ( principal * pmi_rate )/12
+    total_pmi_paid = 0
+    total_cost = 0
+    pmi_stop = 0
+    months_array = []
+    starting_balance_array = []
+    pmt_array = []
+    montly_pmi_pmt_array = []
+    intr_applied_array = []
+    intr_array = []
+    end_balance_array = []
+
+    for n in range(1, payment_number + 1):
+        intr = starting_balance * (percent_annual_interest / (12 * 100.0) )
+        intr_applied = pmt - intr
+        end_balance = starting_balance - intr_applied
+
+        while end_balance >= (property_value - pmi_breakeven):
+            total_pmi_paid += montly_pmi_pmt
+            pmi_stop = n+1
+            break
+
+        print("%4s | %13s | %13s | %13s | %13s | %13s | %13s" %
+               (n, format_currency(starting_balance),
+               format_currency(pmt),
+               format_currency(montly_pmi_pmt + pmt),
+               format_currency(intr_applied),
+               format_currency(intr),
+               format_currency(end_balance)))
+
+        # Create arrays for Table payment
+
+        months_array.append(n)
+        starting_balance_array.append(starting_balance)
+        pmt_array.append(pmt)
+        montly_pmi_pmt_array.append(montly_pmi_pmt + pmt)
+        intr_applied_array.append(intr_applied)
+        intr_array.append(intr)
+        end_balance_array.append(end_balance)
+
+        starting_balance = end_balance
+        total_cost += pmt
+
+    mortgage_payment_table = [months_array, starting_balance_array, pmt_array, montly_pmi_pmt_array,
+                              intr_applied_array, intr_array, end_balance_array] #mortgage schedule table
+
+    return mortgage_payment_table, pmi_stop, total_cost       
+
+
