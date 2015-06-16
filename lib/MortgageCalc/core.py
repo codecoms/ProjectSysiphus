@@ -44,14 +44,14 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
     intr_applied = 0
     money_down = property_value * (percent_down/100.0)
     starting_balance = property_value - money_down
-    montly_pmi_pmt = ( starting_balance * pmi_rate )/12
+    monthly_pmi_pmt = ( starting_balance * pmi_rate )/12
     total_pmi_paid = 0
     total_cost = 0
     pmi_stop = 0
     months_array = []
     starting_balance_array = []
     pmt_array = []
-    montly_pmi_pmt_array = []
+    monthly_pmi_pmt_array = []
     intr_applied_array = []
     intr_array = []
     end_balance_array = []
@@ -62,7 +62,7 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
         end_balance = starting_balance - intr_applied
 
         while end_balance >= (property_value - pmi_breakeven):
-            total_pmi_paid += montly_pmi_pmt
+            total_pmi_paid += monthly_pmi_pmt
             pmi_stop = n+1
             break
 
@@ -71,7 +71,7 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
         months_array.append(n)
         starting_balance_array.append(starting_balance)
         pmt_array.append(pmt)
-        montly_pmi_pmt_array.append(montly_pmi_pmt + pmt)
+        monthly_pmi_pmt_array.append(monthly_pmi_pmt + pmt)
         intr_applied_array.append(intr_applied)
         intr_array.append(intr)
         end_balance_array.append(end_balance)
@@ -79,9 +79,22 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
         starting_balance = end_balance
         total_cost += pmt
 
-    mortgage_payment_table = [months_array, starting_balance_array, pmt_array, montly_pmi_pmt_array,
-                              intr_applied_array, intr_array, end_balance_array] #mortgage schedule table
+    mortgage_payment_table = []
 
-    return mortgage_payment_table, pmi_stop, total_cost
+    for n in range(0, payment_number ):
+        mortgage_payment_table.append({ 'month': months_array[n],
+                                        'starting_balance': starting_balance_array[n],
+                                        'pmt': pmt_array[n],
+                                        'monthly_pmi_pmt': monthly_pmi_pmt_array[n],
+                                        'intr_applied': intr_applied_array[n],
+                                        'intr': intr_array[n],
+                                        'end_balance': end_balance_array[n]
+                                      })
+
+
+    #mortgage_payment_table = [months_array, starting_balance_array, pmt_array, monthly_pmi_pmt_array,
+    #                          intr_applied_array, intr_array, end_balance_array] #mortgage schedule table
+
+    return mortgage_payment_table #, pmi_stop, total_cost
 
 
