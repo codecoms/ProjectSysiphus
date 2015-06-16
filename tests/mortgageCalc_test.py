@@ -24,7 +24,7 @@ class TestMortgageCalc(unittest.TestCase):
         assert_equal(True, True)
 
     def test_get_mortgage_schedule(self):
-        result = core.get_mortgage_schedule(True, 270000, 4.9, 30, 360, 0.54, 12.0)
+        result = core.get_mortgage_schedule(True, 270000, 4.9, 30, 360, 0.54, 12.0, 1261.01, 21600)
         expected = ""
         assert_equal(expected, result)
 

@@ -38,12 +38,13 @@ def get_pmi_rate(loan_to_value, mortgage_years, pmi_required ):
 
     return pmi_rate
 
-def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest, mortgage_years, payment_number, get_pmi_rate, percent_down):
+def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest, mortgage_years,
+                          payment_number, pmi_rate, percent_down, pmt, pmi_breakeven):
     intr = 0
     intr_applied = 0
     money_down = property_value * (percent_down/100.0)
     starting_balance = property_value - money_down
-    montly_pmi_pmt = ( principal * pmi_rate )/12
+    montly_pmi_pmt = ( starting_balance * pmi_rate )/12
     total_pmi_paid = 0
     total_cost = 0
     pmi_stop = 0
@@ -81,6 +82,6 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
     mortgage_payment_table = [months_array, starting_balance_array, pmt_array, montly_pmi_pmt_array,
                               intr_applied_array, intr_array, end_balance_array] #mortgage schedule table
 
-    return mortgage_payment_table, pmi_stop, total_cost       
+    return mortgage_payment_table, pmi_stop, total_cost
 
 
