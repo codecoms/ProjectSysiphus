@@ -56,19 +56,19 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
     intr_array = []
     end_balance_array = []
 
-    for n in range(1, payment_number + 1):
+    for n in range(0, payment_number):
         intr = starting_balance * (percent_annual_interest / (12 * 100.0) )
         intr_applied = pmt - intr
         end_balance = starting_balance - intr_applied
 
         while end_balance >= (property_value - pmi_breakeven):
             total_pmi_paid += monthly_pmi_pmt
-            pmi_stop = n+1
+            pmi_stop = n+2
             break
 
         # Create arrays for Table payment
 
-        months_array.append(n)
+        months_array.append(n+1)
         starting_balance_array.append(starting_balance)
         pmt_array.append(pmt)
         monthly_pmi_pmt_array.append(monthly_pmi_pmt + pmt)
