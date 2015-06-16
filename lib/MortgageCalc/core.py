@@ -38,7 +38,7 @@ def get_pmi_rate(loan_to_value, mortgage_years, pmi_required ):
 
     return pmi_rate
 
-def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest, mortgage_years, payment_number, get_pmi_rate):
+def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest, mortgage_years, payment_number, get_pmi_rate, percent_down):
     intr = 0
     intr_applied = 0
     money_down = property_value * (percent_down/100.0)
