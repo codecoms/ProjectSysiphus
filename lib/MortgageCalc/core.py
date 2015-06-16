@@ -65,14 +65,6 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
             pmi_stop = n+1
             break
 
-        print("%4s | %13s | %13s | %13s | %13s | %13s | %13s" %
-               (n, format_currency(starting_balance),
-               format_currency(pmt),
-               format_currency(montly_pmi_pmt + pmt),
-               format_currency(intr_applied),
-               format_currency(intr),
-               format_currency(end_balance)))
-
         # Create arrays for Table payment
 
         months_array.append(n)
