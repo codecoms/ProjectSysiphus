@@ -78,4 +78,13 @@ def get_mortgage_schedule(pmi_required, property_value, percent_annual_interest,
 
         mortgage_payment_table.append(entry)
 
-    return mortgage_payment_table #, pmi_stop, total_cost
+    return mortgage_payment_table
+
+def get_total_cost(mortgage_payment_table):
+    total_cost = 0.0
+    lenght = len(mortgage_payment_table)
+    for key in range(0, lenght):
+        for k, v in mortgage_payment_table[key].items():
+            if k == 'pmt':
+                total_cost += v
+    return total_cost
